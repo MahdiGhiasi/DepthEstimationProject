@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 SCALE_FACTOR = 8
-TRIM_TOP = 0.3
+TRIM_TOP = 0.32
 TRIM_LEFT = 0.05
 
 from PIL import Image
