@@ -221,9 +221,9 @@ def chunk(seq, num):
 
 
 
-input_path = "H:\\Proje Karshenasi\\Dataset\\KITTI\\data_depth_annotated\\train\\2011_09_28_drive_0038_sync\\proj_depth\\groundtruth" 
+#input_path = "H:\\Proje Karshenasi\\Dataset\\KITTI\\data_depth_annotated\\train\\2011_09_28_drive_0038_sync\\proj_depth\\groundtruth" 
 #input_path = "H:\\Proje Karshenasi\\Dataset\\KITTI\\data_depth_annotated\\" 
-#input_path = input("Input files path?")
+input_path = input("Input files path?\n")
 
 output_path = "depth_output"
 
