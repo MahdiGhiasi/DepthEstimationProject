@@ -9,7 +9,7 @@ from PIL import Image
 import numpy as np
 import os
 import colorsys
-from threading import Thread
+from multiprocessing import Process
 
 def depth_read(filename):
     # loads depth map D from png file
@@ -183,7 +183,7 @@ def preprocess(input_path, output_path):
     save_image(result, output_path)
 
 
-def preprocess_files(found_files, thread_id):
+def preprocess_files(found_files, input_path, output_path, thread_id):
     counter = 0
     for file in found_files:        
         file_path = os.path.sep.join(file.split(os.path.sep)[0:-1])
@@ -224,36 +224,38 @@ def chunk(seq, num):
 
 
 
-#input_path = "H:\\Proje Karshenasi\\Dataset\\KITTI\\data_depth_annotated\\train\\2011_09_28_drive_0038_sync\\proj_depth\\groundtruth" 
-#input_path = "H:\\Proje Karshenasi\\Dataset\\KITTI\\data_depth_annotated\\" 
-input_path = input("Input files path?\n")
-
-output_path = "depth_output"
-
-print("Searching for files...")
-found_files = []
-for root, dirs, files in os.walk(input_path):
-    for file in files:
-        if file.lower().endswith(".png"):
-            fullpath = os.path.join(root, file)
-            found_files.append(fullpath)
-            if len(found_files) % 1000 == 0:
-                print(len(found_files), "files found")
+if __name__ == '__main__':
     
+    #input_path = "H:\\Proje Karshenasi\\Dataset\\KITTI\\data_depth_annotated\\train\\2011_09_28_drive_0038_sync\\proj_depth\\groundtruth" 
+    #input_path = "H:\\Proje Karshenasi\\Dataset\\KITTI\\data_depth_annotated\\" 
+    input_path = input("Input files path?\n")
 
-print(len(found_files), "files found")
-print()
-print("Processing in", THREAD_COUNT, "parallel threads...")
+    output_path = "depth_output"
 
-found_files_chunks = chunk(found_files, THREAD_COUNT)
+    print("Searching for files...")
+    found_files = []
+    for root, dirs, files in os.walk(input_path):
+        for file in files:
+            if file.lower().endswith(".png"):
+                fullpath = os.path.join(root, file)
+                found_files.append(fullpath)
+                if len(found_files) % 1000 == 0:
+                    print(len(found_files), "files found")
+        
 
-threads = []
-for i in range(THREAD_COUNT):
-    thread = Thread(target=preprocess_files, args=[found_files_chunks[i], i])
-    thread.start()
-    threads.append(thread)
+    print(len(found_files), "files found")
+    print()
+    print("Processing in", THREAD_COUNT, "parallel threads...")
 
-for thread in threads:
-    thread.join()
+    found_files_chunks = chunk(found_files, THREAD_COUNT)
 
-print("finished")
+    processes = []
+    for i in range(THREAD_COUNT):
+        process = Process(target=preprocess_files, args=[found_files_chunks[i], input_path, output_path, i])
+        process.start()
+        processes.append(process)
+
+    for process in processes:
+        process.join()
+
+    print("finished")
