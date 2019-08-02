@@ -198,8 +198,11 @@ def preprocess_files(found_files, thread_id):
 
         #print(output_file_fullpath)
 
-        if not os.path.exists(output_file_path):
-            os.makedirs(output_file_path)
+        try:
+            if not os.path.exists(output_file_path):
+                os.makedirs(output_file_path)
+        except:
+            pass
 
         preprocess(file, output_file_fullpath)
 
