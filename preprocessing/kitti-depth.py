@@ -10,6 +10,7 @@ import numpy as np
 import os
 import colorsys
 from multiprocessing import Process
+import jsonpickle
 
 def depth_read(filename):
     # loads depth map D from png file
@@ -23,7 +24,7 @@ def depth_read(filename):
 
     depth = depth_png.astype(np.float) / 256.
     depth[depth_png == 0] = -1.
-    return depth
+    return depth.tolist()
 
 def save_image(result, image_path):
     height = len(result)
@@ -91,7 +92,7 @@ def scale(result, factor):
 def fill_sky(result):
     height = len(result)
     width = len(result[0])
-    maxVal = np.max(result)
+    maxVal = np.max(result).item()
 
     for i in range(width):
         for j in range(height):
@@ -106,7 +107,7 @@ def fill_sky(result):
 def fill_empty_rows(result):
     height = len(result)
     width = len(result[0])
-    maxVal = np.max(result)
+    maxVal = np.max(result).item()
 
     for i in range(height):
         isEmpty = True
@@ -168,8 +169,16 @@ def trim_left(result):
             result[i].pop(0)
     return result
 
+def save_data(data, path):
+    json_data = jsonpickle.encode(data)
+    #print(json_data)
+    output_file = open(path, "w")
+    output_file.write(json_data)
+    output_file.close()
+
 def preprocess(input_path, output_path):
     result = depth_read(input_path)
+
 
     result = scale(result, SCALE_FACTOR)
     #result = fill_sky(result)
@@ -179,8 +188,8 @@ def preprocess(input_path, output_path):
     result = trim_top(result)
     result = trim_left(result)
 
-
     save_image(result, output_path)
+    save_data(result, output_path + '.json')
 
 
 def preprocess_files(found_files, input_path, output_path, thread_id):
