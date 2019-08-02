@@ -1,4 +1,4 @@
 .vscode
 
-preprocessing/output
-preprocessing/rgb-output
+preprocessing/depth_output
+preprocessing/rgb_output
