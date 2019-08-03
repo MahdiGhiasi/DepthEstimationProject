@@ -4,10 +4,12 @@ SCALE_FACTOR = 8
 TRIM_TOP = 0.32
 TRIM_LEFT = 0.05
 
+GRAYSCALE = True
+
 from PIL import Image
 import numpy as np
 import os
-
+import jsonpickle
 
 def image_read_and_resize(filename):
     img = Image.open(filename)
@@ -31,7 +33,11 @@ def save_image(result, image_path):
         for j in range(height):
             values = result[j][i];
             if isinstance(values, list):
-                (r,g,b) = (values[0], values[1], values[2])
+                if GRAYSCALE:
+                    avg = (values[0] + values[1] + values[2]) / 3
+                    (r,g,b) = (avg, avg, avg)
+                else:
+                    (r,g,b) = (values[0], values[1], values[2])
             else:
                 (r,g,b) = (values, values, values)
             img.putpixel((i, j), (r, g, b, 255))
@@ -62,9 +68,9 @@ def process(input_path, output_path):
     save_image(result, output_path)
 
 
-input_path = "H:\\Proje Karshenasi\\Dataset\\KITTI\\2011_09_28_drive_0038_sync\\2011_09_28\\2011_09_28_drive_0038_sync" 
+#input_path = "H:\\Proje Karshenasi\\Dataset\\KITTI\\2011_09_28_drive_0038_sync\\2011_09_28\\2011_09_28_drive_0038_sync" 
 #input_path = "H:\\Proje Karshenasi\\Dataset\\KITTI\\data_depth_annotated\\" 
-#input_path = input("Input files path?")
+input_path = input("Input files path?")
 
 output_path = "rgb_output"
 
@@ -94,7 +100,7 @@ for file in found_files:
         input_relative_path = input_relative_path[1:]
 
     output_file_path = os.path.join(output_path, input_relative_path)
-    output_file_fullpath = os.path.join(output_file_path, "p" + file_name)
+    output_file_fullpath = os.path.join(output_file_path, "i" + file_name)
 
     #print(output_file_fullpath)
 
@@ -104,7 +110,7 @@ for file in found_files:
     process(file, output_file_fullpath)
 
     counter += 1
-    if counter % 1 == 0:
+    if counter % 10 == 0:
         print(counter, "files processed")
 
 
