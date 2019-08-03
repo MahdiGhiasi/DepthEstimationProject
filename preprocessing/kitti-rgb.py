@@ -34,7 +34,7 @@ def save_image(result, image_path):
             values = result[j][i];
             if isinstance(values, list):
                 if GRAYSCALE:
-                    avg = (values[0] + values[1] + values[2]) / 3
+                    avg = int((values[0] + values[1] + values[2]) / 3)
                     (r,g,b) = (avg, avg, avg)
                 else:
                     (r,g,b) = (values[0], values[1], values[2])
@@ -59,6 +59,28 @@ def trim_left(result):
             result[i].pop(0)
     return result
 
+def save_data(data, path):
+    json_data = jsonpickle.encode(data)
+    #print(json_data)
+    output_file = open(path, "w")
+    output_file.write(json_data)
+    output_file.close()
+
+def save_data_grayscale(data, path):
+    data2 = []
+
+    for row in data:
+        x = []
+        for d in row:
+            if isinstance(d, list):
+                x.append(int((d[0] + d[1] + d[2]) / 3))
+            else:
+                save_data(data, path)
+                return
+        data2.append(x)
+
+    save_data(data2, path)
+
 def process(input_path, output_path):
     result = image_read_and_resize(input_path)
 
@@ -66,6 +88,11 @@ def process(input_path, output_path):
     result = trim_left(result)
 
     save_image(result, output_path)
+
+    if GRAYSCALE:
+        save_data_grayscale(result, output_path + '.json')
+    else:
+        save_data(result, output_path + '.json')
 
 
 #input_path = "H:\\Proje Karshenasi\\Dataset\\KITTI\\2011_09_28_drive_0038_sync\\2011_09_28\\2011_09_28_drive_0038_sync" 
