@@ -2,3 +2,5 @@
 
 preprocessing/depth_output
 preprocessing/rgb_output
+
+*.h5
