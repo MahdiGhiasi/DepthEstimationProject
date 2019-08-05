@@ -3,6 +3,9 @@ import jsonpickle
 from threading import Thread
 import h5py
 
+WIDTH = 147
+HEIGHT = 31
+
 
 # THREAD_COUNT = 1
 
@@ -100,6 +103,15 @@ def create_h5(keys, files, name, output):
 
         content = jsonpickle.decode(content_string)
 
+        if (len(content) != HEIGHT):
+            print("ERROR: Unexpected height!", len(content))
+            print(full_path)
+            exit()
+        if (len(content[0]) != WIDTH):
+            print("ERROR: Unexpected width!", len(content[0]))
+            print(full_path)
+            exit()
+
         dataset.append(content)
         #print(data)
         #return
@@ -107,7 +119,7 @@ def create_h5(keys, files, name, output):
         if len(dataset) % 100 == 0:
             print("\r", len(dataset), "/", len(keys), "loaded", end='')
 
-    print()
+    print("\r                                                       ")
     print("writing", output, "...")
     hf = h5py.File(output, 'w')
     hf.create_dataset(name, data=dataset)
