@@ -1,8 +1,10 @@
 #!/usr/bin/python
 
-SCALE_FACTOR = 8
-TRIM_TOP = 0.32
-TRIM_LEFT = 0.05
+SCALE_FACTOR = 12
+#TRIM_TOP = 0.32
+#TRIM_LEFT = 0.05
+TRIMMED_HEIGHT = 96
+TRIMMED_WIDTH = 18
 THREAD_COUNT = 4
 
 from PIL import Image
@@ -156,14 +158,14 @@ def fill_holes(result):
 
 def trim_top(result):
     height = len(result)
-    new_height = int(height - TRIM_TOP * height)
+    new_height = TRIMMED_HEIGHT
     while len(result) > new_height:
         result.pop(0)
     return result
 
 def trim_left(result):
     width = len(result[0])
-    new_width = int(width - TRIM_LEFT * width)
+    new_width = TRIMMED_WIDTH
     while len(result[0]) > new_width:
         for i in range(len(result)):
             result[i].pop(0)
