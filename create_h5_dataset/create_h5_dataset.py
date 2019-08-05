@@ -2,9 +2,12 @@ import os
 import jsonpickle
 from threading import Thread
 import h5py
+import random
 
 WIDTH = 147
 HEIGHT = 31
+
+CHUNK_MAX_SIZE = 10000
 
 
 # THREAD_COUNT = 1
@@ -23,16 +26,16 @@ HEIGHT = 31
 
 #     result[index] = data
 
-# def chunk(seq, num):
-#     avg = len(seq) / float(num)
-#     out = []
-#     last = 0.0
+def chunk(seq, num):
+    avg = len(seq) / float(num)
+    out = []
+    last = 0.0
 
-#     while last < len(seq):
-#         out.append(seq[int(last):int(last + avg)])
-#         last += avg
+    while last < len(seq):
+        out.append(seq[int(last):int(last + avg)])
+        last += avg
 
-#     return out
+    return out
 
 # def load_data_parallel(files):
 #     files_keyvaluepair = [[k, v] for k, v in files.items()]
@@ -153,8 +156,18 @@ print(len(common_t_keys), "common train keys")
 print(len(common_e_keys), "common eval keys")
 print()
 
-create_h5(common_t_keys, rgb_t_files, 'rgb_train', 'rgb_train.h5')
-create_h5(common_t_keys, depth_t_files, 'depth_train', 'depth_train.h5')
-create_h5(common_e_keys, rgb_e_files, 'rgb_eval', 'rgb_eval.h5')
-create_h5(common_e_keys, depth_e_files, 'depth_eval', 'depth_eval.h5')
+random.shuffle(common_t_keys)
+random.shuffle(common_e_keys)
+
+t_chunk_count = 1 + int(len(common_t_keys) / CHUNK_MAX_SIZE)
+common_t_keys_chunk = chunk(common_t_keys, t_chunk_count)
+for i in range(t_chunk_count):
+    create_h5(common_t_keys_chunk[i], rgb_t_files, 'rgb_train_' + str(i), 'rgb_train_' + str(i) + '.h5')
+    create_h5(common_t_keys_chunk[i], depth_t_files, 'depth_train_' + str(i), 'depth_train_' + str(i) + '.h5')
+
+e_chunk_count = 1 + int(len(common_e_keys) / CHUNK_MAX_SIZE)
+common_e_keys_chunk = chunk(common_e_keys, e_chunk_count)
+for i in range(e_chunk_count):
+    create_h5(common_e_keys_chunk[i], rgb_e_files, 'rgb_eval_' + str(i), 'rgb_eval_' + str(i) + '.h5')
+    create_h5(common_e_keys_chunk[i], depth_e_files, 'depth_eval_' + str(i), 'depth_eval_' + str(i) + '.h5')
 
