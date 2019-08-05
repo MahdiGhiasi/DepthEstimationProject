@@ -1,7 +1,7 @@
 import numpy as np
 from PIL import Image
 import h5py
-
+import os
 
 def save_image(result, image_path):
     height = len(result)
@@ -43,4 +43,5 @@ print('Dataset contains', len(data), 'entries. Which one do you want?')
 index = int(input())
 
 save_image(data[index], 'show_rgb.png')
+os.startfile('show_rgb.png')
 

@@ -2,6 +2,7 @@ import numpy as np
 from PIL import Image
 import h5py
 import colorsys
+import os
 
 
 def save_image(result, image_path):
@@ -46,4 +47,6 @@ print('Dataset contains', len(data), 'entries. Which one do you want?')
 index = int(input())
 
 save_image(data[index], 'show_depth.png')
+
+os.startfile('show_depth.png')
 
