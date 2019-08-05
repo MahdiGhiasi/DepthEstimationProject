@@ -119,11 +119,11 @@ def create_h5(keys, files, name, output):
         #print(data)
         #return
 
-        if len(dataset) % 100 == 0:
+        if len(dataset) % 50 == 0:
             print("\r", len(dataset), "/", len(keys), "loaded", end='')
 
-    print("\r                                                       ")
-    print("writing", output, "...")
+    print("\r                                                       ", end='')
+    print("\rwriting", output, "...")
     hf = h5py.File(output, 'w')
     hf.create_dataset(name, data=dataset)
     hf.close()
