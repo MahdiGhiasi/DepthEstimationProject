@@ -4,3 +4,6 @@ preprocessing/depth_output
 preprocessing/rgb_output
 
 *.h5
+
+h5_visualizer/show_depth.png
+h5_visualizer/show_rgb.png
