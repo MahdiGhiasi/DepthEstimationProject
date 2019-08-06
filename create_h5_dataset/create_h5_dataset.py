@@ -9,6 +9,7 @@ HEIGHT = 31
 
 CHUNK_MAX_SIZE = 10000
 
+CROP_SETTING = 'crop3' # 'crop3' or 'none'
 
 # THREAD_COUNT = 1
 
@@ -25,6 +26,14 @@ CHUNK_MAX_SIZE = 10000
 #             print(len(data), "files loaded")
 
 #     result[index] = data
+
+def crop_w(image, start, length):
+    output = []
+    for row in image:
+        output.append(row[start:(start+length)])
+
+    return output;
+
 
 def chunk(seq, num):
     avg = len(seq) / float(num)
@@ -115,11 +124,21 @@ def create_h5(keys, files, name, output):
             print(full_path)
             exit()
 
-        dataset.append(content)
+        if CROP_SETTING == 'crop3':
+            w = int(len(content[0]) / 3)
+            s1 = crop_w(content, 0, w)
+            s2 = crop_w(content, w, w)
+            s3 = crop_w(content, 2*w, w)
+
+            dataset.append(s1)
+            dataset.append(s2)
+            dataset.append(s3)
+        else:
+            dataset.append(content)
         #print(data)
         #return
 
-        if len(dataset) % 50 == 0:
+        if len(dataset) % 25 == 0:
             print("\r", len(dataset), "/", len(keys), "loaded", end='')
 
     print("\r                                                       ", end='')
@@ -131,6 +150,18 @@ def create_h5(keys, files, name, output):
     print()
 
 
+def get_keys(keys):
+    output1 = []
+    output2 = []
+
+    for key in keys:
+        if "image_02" in key:
+            alt_key = key.replace("image_02", "image_03")
+            if alt_key in keys:
+                output1.append(key)
+                output2.append(alt_key)
+
+    return (output1, output2)
 
 print("Searching for files...")
 print()
@@ -143,31 +174,40 @@ depth_e_files = load_files('H:\\Proje Karshenasi\\Dataset\\KITTI\\depth_output\\
 rgb_t_keys = [key for key, value in rgb_t_files.items()]
 depth_t_keys = [key for key, value in depth_t_files.items()]
 common_t_keys = list(set(rgb_t_keys).intersection(depth_t_keys))
+random.shuffle(common_t_keys)
+(final_t_keys_02, final_t_keys_03) = get_keys(common_t_keys)
 
 rgb_e_keys = [key for key, value in rgb_e_files.items()]
 depth_e_keys = [key for key, value in depth_e_files.items()]
 common_e_keys = list(set(rgb_e_keys).intersection(depth_e_keys))
+random.shuffle(common_e_keys)
+(final_e_keys_02, final_e_keys_03) = get_keys(common_e_keys)
 
 print(len(rgb_t_keys), "keys for rgb train dataset")
 print(len(rgb_e_keys), "keys for rgb eval dataset")
 print(len(depth_t_keys), "keys for depth train dataset")
 print(len(depth_e_keys), "keys for depth eval dataset")
-print(len(common_t_keys), "common train keys")
-print(len(common_e_keys), "common eval keys")
+print(len(final_t_keys_02), "common train image_02 keys")
+print(len(final_t_keys_03), "common train image_03 keys")
+print(len(final_e_keys_02), "common eval image_02 keys")
+print(len(final_e_keys_03), "common eval image_03 keys")
 print()
 
-random.shuffle(common_t_keys)
-random.shuffle(common_e_keys)
-
 t_chunk_count = 1 + int(len(common_t_keys) / CHUNK_MAX_SIZE)
-common_t_keys_chunk = chunk(common_t_keys, t_chunk_count)
+t_keys_02_chunk = chunk(final_t_keys_02, t_chunk_count)
+t_keys_03_chunk = chunk(final_t_keys_03, t_chunk_count)
 for i in range(t_chunk_count):
-    create_h5(common_t_keys_chunk[i], rgb_t_files, 'rgb_train_' + str(i), 'rgb_train_' + str(i) + '.h5')
-    create_h5(common_t_keys_chunk[i], depth_t_files, 'depth_train_' + str(i), 'depth_train_' + str(i) + '.h5')
+    create_h5(t_keys_02_chunk[i], rgb_t_files, 'rgb_train_02_' + str(i), 'rgb_train_02_' + str(i) + '.h5')
+    create_h5(t_keys_02_chunk[i], depth_t_files, 'depth_train_02_' + str(i), 'depth_train_02_' + str(i) + '.h5')
+    create_h5(t_keys_03_chunk[i], rgb_t_files, 'rgb_train_03_' + str(i), 'rgb_train_03_' + str(i) + '.h5')
+    create_h5(t_keys_03_chunk[i], depth_t_files, 'depth_train_03_' + str(i), 'depth_train_03_' + str(i) + '.h5')
 
 e_chunk_count = 1 + int(len(common_e_keys) / CHUNK_MAX_SIZE)
-common_e_keys_chunk = chunk(common_e_keys, e_chunk_count)
+e_keys_02_chunk = chunk(final_e_keys_02, e_chunk_count)
+e_keys_03_chunk = chunk(final_e_keys_03, e_chunk_count)
 for i in range(e_chunk_count):
-    create_h5(common_e_keys_chunk[i], rgb_e_files, 'rgb_eval_' + str(i), 'rgb_eval_' + str(i) + '.h5')
-    create_h5(common_e_keys_chunk[i], depth_e_files, 'depth_eval_' + str(i), 'depth_eval_' + str(i) + '.h5')
+    create_h5(e_keys_02_chunk[i], rgb_e_files, 'rgb_eval_02_' + str(i), 'rgb_eval_02_' + str(i) + '.h5')
+    create_h5(e_keys_02_chunk[i], depth_e_files, 'depth_eval_02_' + str(i), 'depth_eval_02_' + str(i) + '.h5')
+    create_h5(e_keys_03_chunk[i], rgb_e_files, 'rgb_eval_03_' + str(i), 'rgb_eval_03_' + str(i) + '.h5')
+    create_h5(e_keys_03_chunk[i], depth_e_files, 'depth_eval_03_' + str(i), 'depth_eval_03_' + str(i) + '.h5')
 
