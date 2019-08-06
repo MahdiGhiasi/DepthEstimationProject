@@ -135,8 +135,13 @@ y_train = np.reshape(np.array(depth_train_02) * Y_MUL, (len(depth_train_02), OUT
 x_eval = np.reshape(np.array(rgb_eval) * X_MUL, (len(rgb_eval), INPUT_HEIGHT, INPUT_WIDTH, 1))
 y_eval = np.reshape(np.array(depth_eval_02) * Y_MUL, (len(depth_eval_02), OUTPUT_HEIGHT, OUTPUT_WIDTH, 1))
 
-test_sample_x = [x_eval[0], x_eval[100], x_eval[200], x_eval[500], x_eval[1000]]
-test_sample_y = [y_eval[0], y_eval[100], y_eval[200], y_eval[500], y_eval[1000]]
+test_ctr = 0
+test_sample_x = []
+test_sample_y = []
+while test_ctr < len(x_eval):
+    test_sample_x.append(x_eval[test_ctr])
+    test_sample_y.append(y_eval[test_ctr])
+    test_ctr += 100
 
 logdir = 'log/' + time.strftime("%Y%m%d-%H%M%S")
 if not os.path.exists('log'):
