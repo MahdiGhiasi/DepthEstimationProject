@@ -4,10 +4,10 @@ from threading import Thread
 import h5py
 import random
 
-WIDTH = 147
-HEIGHT = 31
+WIDTH = 144
+HEIGHT = 30
 
-CHUNK_MAX_SIZE = 10000
+CHUNK_MAX_SIZE = 220000
 
 CROP_SETTING = 'crop3' # 'crop3' or 'none'
 
