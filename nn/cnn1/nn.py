@@ -112,16 +112,17 @@ layer = Conv2D(32, (3, 3), activation='relu', padding='same')(input_img)
 layer = MaxPooling2D((2,2), padding='same')(layer)
 layer = Conv2D(16, (3, 3), activation='relu', padding='same')(layer)
 layer = MaxPooling2D((2,2), padding='same')(layer)
-layer = Conv2D(8, (3, 3), activation='relu', padding='same')(layer)
-layer = MaxPooling2D((2,2), padding='same')(layer)
+layer = Conv2D(16, (3, 3), activation='relu', padding='same')(layer)
+#layer = MaxPooling2D((2,2), padding='same')(layer)
 
 layer = Flatten()(layer)
-layer = Dense(384, activation='relu')(layer)
+layer = Dense(1440, activation='relu')(layer)
+layer = Dense(720, activation='relu')(layer)
 layer = Dense(360, activation='relu')(layer)
 
 layer = Reshape((15, 24, 1))(layer)
 
-layer = Conv2D(8, (3, 3), activation='relu', padding='same')(layer)
+layer = Conv2D(16, (3, 3), activation='relu', padding='same')(layer)
 layer = UpSampling2D((2, 2))(layer)
 layer = Conv2D(1, (3, 3), activation='relu', padding='same')(layer)
 
