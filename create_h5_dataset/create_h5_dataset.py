@@ -105,6 +105,10 @@ def load_files(input_path):
 def create_h5(keys, files, name, output):
     dataset = []
 
+    total_count = len(keys)
+    if CROP_SETTING == 'crop3':
+        total_count *= 3
+
     print("creating dataset", name, "...")
     for key in keys:
         full_path = files[key]
@@ -139,7 +143,7 @@ def create_h5(keys, files, name, output):
         #return
 
         if len(dataset) % 25 == 0:
-            print("\r", len(dataset), "/", len(keys), "loaded", end='')
+            print("\r", len(dataset), "/", total_count, "loaded", end='')
 
     print("\r                                                       ", end='')
     print("\rwriting", output, "...")
