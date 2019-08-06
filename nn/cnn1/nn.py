@@ -137,8 +137,8 @@ y_train = np.reshape(np.array(depth_train_02) * Y_MUL, (len(depth_train_02), OUT
 x_eval = np.reshape(np.array(rgb_eval) * X_MUL, (len(rgb_eval), INPUT_HEIGHT, INPUT_WIDTH, 1))
 y_eval = np.reshape(np.array(depth_eval_02) * Y_MUL, (len(depth_eval_02), OUTPUT_HEIGHT, OUTPUT_WIDTH, 1))
 
-test_sample_x = x_eval[0]
-test_sample_y = y_eval[0]
+test_sample_x = [x_eval[0], x_eval[100], x_eval[200], x_eval[500], x_eval[1000]]
+test_sample_y = [y_eval[0], y_eval[100], y_eval[200], y_eval[500], y_eval[1000]]
 
 logdir = 'log/' + time.strftime("%Y%m%d-%H%M%S")
 if not os.path.exists('log'):
@@ -146,10 +146,17 @@ if not os.path.exists('log'):
 if not os.path.exists(logdir):
     os.mkdir(logdir)
 
-save_rgb_image(test_sample_x / X_MUL, logdir + '/_x.png')
-save_depth_image(test_sample_y / Y_MUL, logdir + '/_y.png')
+for i in range(len(test_sample_x)):
+    if not os.path.exists(logdir + '/' + str(i)):
+        os.mkdir(logdir + '/' + str(i))
 
-for i in range(10000):
+for i in range(len(test_sample_x)):
+    save_rgb_image(test_sample_x[i] / X_MUL, logdir + '/' + str(i) + '/_x.png')
+    save_depth_image(test_sample_y[i] / Y_MUL, logdir + '/' + str(i) + '/_y.png')
+
+counter = 0
+while True:
+    counter += 1
     print("Epoch", i)
     model.fit(x_train, y_train, 
         epochs=1,
@@ -157,7 +164,10 @@ for i in range(10000):
         shuffle=True,
         validation_data=(x_eval, y_eval))
 
-    yy = model.predict(np.array([test_sample_x]))
-    print(yy.shape)    
-    save_depth_image(yy[0] / Y_MUL, logdir + '/' + str(i) + '.png')
+    yy = model.predict(np.array(test_sample_x))
+    for i in range(len(test_sample_x)):
+        save_depth_image(yy[i] / Y_MUL, logdir + '/' + str(i) + '/' + str(counter) + '.png')
+
+    if counter % 100 == 0:
+        model.save(logdir + '/model-epoch' + str(counter) + '.h5')
     
