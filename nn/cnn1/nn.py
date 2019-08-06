@@ -157,7 +157,7 @@ for i in range(len(test_sample_x)):
 counter = 0
 while True:
     counter += 1
-    print("Epoch", i)
+    print("Epoch", counter)
     model.fit(x_train, y_train, 
         epochs=1,
         batch_size=256,
