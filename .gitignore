@@ -7,3 +7,6 @@ preprocessing/rgb_output
 
 h5_visualizer/show_depth.png
 h5_visualizer/show_rgb.png
+
+log
+*.7z
