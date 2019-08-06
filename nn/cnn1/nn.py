@@ -19,8 +19,6 @@ def save_rgb_image(result, image_path):
     height = len(result)
     width = len(result[0])
 
-    maxVal = np.max(result)
-
     img = Image.new('RGBA', (width, height))
 
     for i in range(width):
@@ -37,8 +35,8 @@ def save_rgb_image(result, image_path):
 def save_depth_image(result, image_path):
     height = len(result)
     width = len(result[0])
-
-    maxVal = np.max(result)
+    
+    maxVal = 100
 
     img = Image.new('RGBA', (width, height))
 
@@ -47,7 +45,7 @@ def save_depth_image(result, image_path):
             if result[j][i] == -1:
                 continue;
 
-            h = 240 * result[j][i] / maxVal;
+            h = 240 * min(result[j][i], maxVal) / maxVal;
             (r,g,b) = colorsys.hsv_to_rgb(h / 360,1,1)
 
             img.putpixel((i, j), (int(r * 255), int(g * 255), int(b * 255), 255))
