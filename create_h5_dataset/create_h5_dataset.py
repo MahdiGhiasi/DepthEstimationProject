@@ -166,10 +166,10 @@ def get_keys(keys):
 print("Searching for files...")
 print()
 
-rgb_t_files = load_files("C:\\Users\\Mahdi\\Projects\\DepthEstimationProject\\preprocessing\\rgb_output\\train")
-depth_t_files = load_files('H:\\Proje Karshenasi\\Dataset\\KITTI\\depth_output\\train')
-rgb_e_files = load_files("C:\\Users\\Mahdi\\Projects\\DepthEstimationProject\\preprocessing\\rgb_output\\val")
-depth_e_files = load_files('H:\\Proje Karshenasi\\Dataset\\KITTI\\depth_output\\val')
+rgb_t_files = load_files("F:\\Proje Karshenasi\\DepthEstimationProject\\preprocessing\\rgb_output\\train")
+depth_t_files = load_files('F:\\Proje Karshenasi\\DepthEstimationProject\\preprocessing\\depth_output\\train')
+rgb_e_files = load_files("F:\\Proje Karshenasi\\DepthEstimationProject\\preprocessing\\rgb_output\\val")
+depth_e_files = load_files('F:\\Proje Karshenasi\\DepthEstimationProject\\preprocessing\\depth_output\\val')
 
 rgb_t_keys = [key for key, value in rgb_t_files.items()]
 depth_t_keys = [key for key, value in depth_t_files.items()]
