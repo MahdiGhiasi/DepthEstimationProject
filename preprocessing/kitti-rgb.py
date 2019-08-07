@@ -152,6 +152,10 @@ if __name__ == '__main__':
         for file in files:
             if file.lower().endswith(".png"):
                 fullpath = os.path.join(root, file)
+
+                if "image_00" in fullpath or "image_01" in fullpath:
+                    continue
+
                 found_files.append(fullpath)
                 if len(found_files) % 1000 == 0:
                     print(len(found_files), "files found")
