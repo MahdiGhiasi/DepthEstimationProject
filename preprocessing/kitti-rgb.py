@@ -27,8 +27,6 @@ def save_image(result, image_path):
     height = len(result)
     width = len(result[0])
 
-    maxVal = np.max(result)
-
     img = Image.new('RGBA', (width, height))
 
     #print("width:", width)
