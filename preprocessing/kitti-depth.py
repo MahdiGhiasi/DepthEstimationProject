@@ -32,7 +32,7 @@ def save_image(result, image_path):
     height = len(result)
     width = len(result[0])
 
-    maxVal = np.max(result)
+    maxVal = 85
 
     img = Image.new('RGBA', (width, height))
 
@@ -44,7 +44,7 @@ def save_image(result, image_path):
             if result[j][i] == -1:
                 continue;
 
-            h = 240 * result[j][i] / maxVal;
+            h = 240 * min(result[j][i] / maxVal, 1);
             (r,g,b) = colorsys.hsv_to_rgb(h / 360,1,1)
 
             #color = (int)(255 * result[j][i] / maxVal)
