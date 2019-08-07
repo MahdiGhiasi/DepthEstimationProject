@@ -1,7 +1,7 @@
 .vscode
 
-preprocessing/depth_output
-preprocessing/rgb_output
+preprocessing/depth_output*
+preprocessing/rgb_output*
 
 *.h5
 
