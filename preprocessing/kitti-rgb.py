@@ -15,6 +15,7 @@ import numpy as np
 import os
 import jsonpickle
 from multiprocessing import Process
+import gzip
 
 def image_read_and_resize(filename):
     img = Image.open(filename)
@@ -65,8 +66,8 @@ def trim_left(result):
 def save_data(data, path):
     json_data = jsonpickle.encode(data)
     #print(json_data)
-    output_file = open(path, "w")
-    output_file.write(json_data)
+    output_file = gzip.open(path, "w")
+    output_file.write(json_data.encode())
     output_file.close()
 
 def save_data_grayscale(data, path):

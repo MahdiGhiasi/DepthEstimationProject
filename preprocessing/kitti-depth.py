@@ -13,6 +13,7 @@ import os
 import colorsys
 from multiprocessing import Process
 import jsonpickle
+import gzip
 
 def depth_read(filename):
     # loads depth map D from png file
@@ -174,8 +175,8 @@ def trim_left(result):
 def save_data(data, path):
     json_data = jsonpickle.encode(data)
     #print(json_data)
-    output_file = open(path, "w")
-    output_file.write(json_data)
+    output_file = gzip.open(path, "w")
+    output_file.write(json_data.encode())
     output_file.close()
 
 def preprocess(input_path, output_path):
@@ -191,7 +192,7 @@ def preprocess(input_path, output_path):
     result = trim_left(result)
 
     save_image(result, output_path)
-    save_data(result, output_path + '.json')
+    save_data(result, output_path + '.json.gz')
 
 
 def preprocess_files(found_files, input_path, output_path, thread_id):
