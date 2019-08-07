@@ -94,9 +94,9 @@ def process(input_path, output_path):
     save_image(result, output_path)
 
     if GRAYSCALE:
-        save_data_grayscale(result, output_path + '.json')
+        save_data_grayscale(result, output_path + '.json.gz')
     else:
-        save_data(result, output_path + '.json')
+        save_data(result, output_path + '.json.gz')
 
 
 def process_files(found_files, input_path, output_path, thread_id):
