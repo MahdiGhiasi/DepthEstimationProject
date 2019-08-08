@@ -5,8 +5,8 @@ import h5py
 import random
 import gzip
 
-WIDTH = 144
-HEIGHT = 30
+WIDTH = 144 * 4
+HEIGHT = 30 * 4
 
 CHUNK_MAX_SIZE = 220000
 
@@ -171,10 +171,10 @@ def get_keys(keys):
 print("Searching for files...")
 print()
 
-rgb_t_files = load_files("F:\\Proje Karshenasi\\DepthEstimationProject\\preprocessing\\rgb_output\\train")
-depth_t_files = load_files('F:\\Proje Karshenasi\\DepthEstimationProject\\preprocessing\\depth_output\\train')
-rgb_e_files = load_files("F:\\Proje Karshenasi\\DepthEstimationProject\\preprocessing\\rgb_output\\val")
-depth_e_files = load_files('F:\\Proje Karshenasi\\DepthEstimationProject\\preprocessing\\depth_output\\val')
+rgb_t_files = load_files("F:\\Proje Karshenasi\\DepthEstimationProject\\preprocessing\\rgb_output_120\\train")
+depth_t_files = load_files('F:\\Proje Karshenasi\\DepthEstimationProject\\preprocessing\\depth_output_120\\train')
+rgb_e_files = load_files("F:\\Proje Karshenasi\\DepthEstimationProject\\preprocessing\\rgb_output_120\\val")
+depth_e_files = load_files('F:\\Proje Karshenasi\\DepthEstimationProject\\preprocessing\\depth_output_120\\val')
 
 rgb_t_keys = [key for key, value in rgb_t_files.items()]
 depth_t_keys = [key for key, value in depth_t_files.items()]
