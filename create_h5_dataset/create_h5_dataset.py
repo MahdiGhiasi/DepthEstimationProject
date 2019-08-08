@@ -1,5 +1,5 @@
 import os
-import jsonpickle
+import json
 from threading import Thread
 import h5py
 import random
@@ -125,7 +125,7 @@ def create_h5(keys, files, name, output):
         
         #print(key)
 
-        content = jsonpickle.decode(content_string)
+        content = json.loads(content_string)
 
         if (len(content) != HEIGHT):
             print("ERROR: Unexpected height!", len(content))
