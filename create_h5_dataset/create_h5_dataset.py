@@ -212,26 +212,10 @@ if __name__ == '__main__':
 
     print ("Will create", t_chunk_count, "chunks for train dataset")
     for i in range(t_chunk_count):
-        processes = []
-
-        p1 = Process(target=create_h5, args=[t_keys_02_chunk[i], rgb_t_files, 'rgb_train_02_' + str(i), 'rgb_train_02_' + str(i) + '.h5'])
-        p1.start()
-        processes.append(p1)
-
-        p2 = Process(target=create_h5, args=[t_keys_02_chunk[i], depth_t_files, 'depth_train_02_' + str(i), 'depth_train_02_' + str(i) + '.h5'])
-        p2.start()
-        processes.append(p2)
-
-        p3 = Process(target=create_h5, args=[t_keys_03_chunk[i], rgb_t_files, 'rgb_train_03_' + str(i), 'rgb_train_03_' + str(i) + '.h5'])
-        p3.start()
-        processes.append(p3)
-
-        p4 = Process(target=create_h5, args=[t_keys_03_chunk[i], depth_t_files, 'depth_train_03_' + str(i), 'depth_train_03_' + str(i) + '.h5'])
-        p4.start()
-        processes.append(p4)
-
-        for process in processes:
-            process.join()
+        create_h5(t_keys_02_chunk[i], rgb_t_files, 'rgb_train_02_' + str(i), 'rgb_train_02_' + str(i) + '.h5')
+        create_h5(t_keys_02_chunk[i], depth_t_files, 'depth_train_02_' + str(i), 'depth_train_02_' + str(i) + '.h5')
+        create_h5(t_keys_03_chunk[i], rgb_t_files, 'rgb_train_03_' + str(i), 'rgb_train_03_' + str(i) + '.h5')
+        create_h5(t_keys_03_chunk[i], depth_t_files, 'depth_train_03_' + str(i), 'depth_train_03_' + str(i) + '.h5')
 
     e_chunk_count = 1 + int(len(common_e_keys) / CHUNK_MAX_SIZE)
     e_keys_02_chunk = chunk(final_e_keys_02, e_chunk_count)
@@ -239,25 +223,9 @@ if __name__ == '__main__':
 
     print ("Will create", e_chunk_count, "chunks for eval dataset")
     for i in range(e_chunk_count):
-        processes = []
-
-        p1 = Process(target=create_h5, args=[e_keys_02_chunk[i], rgb_e_files, 'rgb_eval_02_' + str(i), 'rgb_eval_02_' + str(i) + '.h5'])
-        p1.start()
-        processes.append(p1)
-
-        p2 = Process(target=create_h5, args=[e_keys_02_chunk[i], depth_e_files, 'depth_eval_02_' + str(i), 'depth_eval_02_' + str(i) + '.h5'])
-        p2.start()
-        processes.append(p2)
-
-        p3 = Process(target=create_h5, args=[e_keys_03_chunk[i], rgb_e_files, 'rgb_eval_03_' + str(i), 'rgb_eval_03_' + str(i) + '.h5'])
-        p3.start()
-        processes.append(p3)
-
-        p4 = Process(target=create_h5, args=[e_keys_03_chunk[i], depth_e_files, 'depth_eval_03_' + str(i), 'depth_eval_03_' + str(i) + '.h5'])
-        p4.start()
-        processes.append(p4)
-
-        for process in processes:
-            process.join()
+        create_h5(e_keys_02_chunk[i], rgb_e_files, 'rgb_eval_02_' + str(i), 'rgb_eval_02_' + str(i) + '.h5')
+        create_h5(e_keys_02_chunk[i], depth_e_files, 'depth_eval_02_' + str(i), 'depth_eval_02_' + str(i) + '.h5')
+        create_h5(e_keys_03_chunk[i], rgb_e_files, 'rgb_eval_03_' + str(i), 'rgb_eval_03_' + str(i) + '.h5')
+        create_h5(e_keys_03_chunk[i], depth_e_files, 'depth_eval_03_' + str(i), 'depth_eval_03_' + str(i) + '.h5')
 
     print("finished.")
