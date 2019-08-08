@@ -3,6 +3,7 @@ import jsonpickle
 from threading import Thread
 import h5py
 import random
+import gzip
 
 WIDTH = 144
 HEIGHT = 30
@@ -70,7 +71,7 @@ def load_files(input_path):
     found_files = []
     for root, dirs, files in os.walk(input_path):
         for file in files:
-            if file.lower().endswith(".json"):
+            if file.lower().endswith(".json.gz"):
                 full_path = os.path.join(root, file)
                 found_files.append(full_path)
 
@@ -112,7 +113,7 @@ def create_h5(keys, files, name, output):
     print("creating dataset", name, "...")
     for key in keys:
         full_path = files[key]
-        with open(full_path, 'r') as file:
+        with gzip.open(full_path, 'r') as file:
             content_string = file.read()
         
         #print(key)
