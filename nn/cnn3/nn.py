@@ -104,12 +104,11 @@ def load_dataset_subset():
     rgb_train_03 = []
     
     indexes = []
-    curIndex = random.randint(0, TRAIN_DATASET_MAX_INDEX)
     while len(indexes) < TRAIN_DATASET_ITEM_LOAD_EACH_TIME:
+        curIndex = random.randint(0, TRAIN_DATASET_MAX_INDEX)
         if curIndex in indexes:
             continue
         indexes.append(curIndex)
-        curIndex = random.randint(0, TRAIN_DATASET_MAX_INDEX)
 
     for i in indexes:
         print('loading dataset subset', i, '...')
