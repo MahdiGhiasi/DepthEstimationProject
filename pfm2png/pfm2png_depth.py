@@ -79,22 +79,22 @@ def save_depth_image(result, image_path):
 
     maxVal = np.max(result)
 
-    img = Image.new('RGBA', (width, height))
-
     #print("width:", width)
     #print("height:", height)
 
-    for i in range(width):
-        for j in range(height):
-            if result[j][i] == -1:
-                continue;
-
-            h = 240 * result[j][i] / maxVal;
+    output = []
+    for i in range(height):
+        row = []
+        for j in range(width):
+            h = 240 * result[i][j] / maxVal;
             (r,g,b) = colorsys.hsv_to_rgb(h / 360,1,1)
 
             #color = (int)(255 * result[j][i] / maxVal)
-            img.putpixel((i, j), (int(r * 255), int(g * 255), int(b * 255), 255))
+            row.append([int(r * 255), int(g * 255), int(b * 255), 255])
+        output.append(row)
 
+    img = Image.fromarray(np.asarray(output).astype(np.uint8), mode='RGBA')
+    
     img.save(image_path, "PNG")
 
 
@@ -105,7 +105,7 @@ def normalize(data):
 
     data = data / maxVal
     data = 1 - data
-    data *= 100
+    data *= 90
 
     return data
 
