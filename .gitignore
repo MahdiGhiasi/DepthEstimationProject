@@ -8,5 +8,8 @@ preprocessing/rgb_output*
 h5_visualizer/show_depth.png
 h5_visualizer/show_rgb.png
 
+pfm2png/pfm2png_depth.png
+
 log
 *.7z
+log*.txt
