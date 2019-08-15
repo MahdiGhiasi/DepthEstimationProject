@@ -13,3 +13,6 @@ pfm2png/pfm2png_depth.png
 log
 *.7z
 log*.txt
+
+preprocessing/sceneflow_depth_output*
+preprocessing/sceneflow_rgb_output*
