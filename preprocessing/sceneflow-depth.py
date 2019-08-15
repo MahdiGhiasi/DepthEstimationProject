@@ -66,7 +66,7 @@ def normalize(data):
     data = 35 * 32 / data
     data = 3 * data / 8
     data = np.minimum(data, 85)
-
+    data = data.tolist()
     #print(data)    
 
     return data
@@ -179,7 +179,7 @@ def preprocess(input_path, output_path):
 
     data = normalize(data)
 
-    maxVal = np.max(data)
+    maxVal = np.max(data).item()
     #print(input_path, ":", maxVal)
 
     data = scale_up_image(data, SCALE_UP_FACTOR)
