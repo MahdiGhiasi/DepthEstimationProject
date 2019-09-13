@@ -87,6 +87,8 @@ def load_files(input_path):
                 key += s + "__"
             elif s == "left" or s == "right":
                 key += s + "__"
+            elif s.isnumeric():
+                key += s + "__"
 
         key += path_chunks[-1][1:]
         
